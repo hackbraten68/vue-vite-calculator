@@ -1,130 +1,56 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 defineProps({
   msg: String,
 });
 
-const count = ref(0);
+const calculatorValue = ref('');
+const calculatorElements = ['C','*','/','-', 7,8,9,'+',4,5,6,'%',1,2,3,'=',0,'.'];
+
+export default function () {
+  function action(n) {
+    if(!isNan(n) || n === '.') {
+      this.calculatorValue += n + '';
+    }
+  }
+}
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <div class="p-3 main" style="max-width: 400px; margin: 50px auto; background: #234;">
 
-  <div class="container">
-    <div class="result">TEST</div>
-    <div class="zero digits">0</div>
-    <div class="one digits">1</div>
-    <div class="two digits">2</div>
-    <div class="three digits">3</div>
-    <div class="four digits">4</div>
-    <div class="five digits">5</div>
-    <div class="six digits">6</div>
-    <div class="seven digits">7</div>
-    <div class="eight digits">8</div>
-    <div class="nine digits">9</div>
-    <div class="enter">ENTER</div>
-    <div class="plus operators">+</div>
-    <div class="minus operators">-</div>
-    <div class="multi operators">*</div>
-    <div class="divi operators">/</div>
+    <!-- Calculator Result -->
+    <div class="w-full result rounded m-1 p-2 text-right lead font-weight-bold text-white bg-vue-dark">
+    {{ calculatorValue || 0 }}
+    </div>
+
+    <!-- Calculator Buttons -->
+    <div class="row no-gutters">
+      <div class="col-3" v-for="n in calculatorElements" :key="n">
+        <div class="lead text-white text-center m-1 py-3 bg-vue-dark rounded hover-class"
+        :class="{'bg-vue-green': ['C','*','/','-','+','%','='].includes(n)}"
+        @click="action"
+        >
+          {{ n }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    'result result result result result'
-    'seven eight nine multi divi'
-    'four five six plus minus'
-    'one two three zero enter';
-
-  border: 1px solid red;
-  width: 85vw;
-  height: 250px;
+.bg-vue-dark {
+  background: #31475e;
 }
-
-.digits {
-  border: 1px solid green;
+.bg-vue-green {
+  background: #3fb984;
 }
-
-.operators {
-  border: 1px solid red;
+.hover-class:hover {
+  cursor: pointer;
+  background: #3D5875;
 }
-
 .result {
-  grid-area: result;
-  border: 1px solid white;
-}
-
-.zero {
-  grid-area: zero;
-}
-
-.one {
-  grid-area: one;
-  border: 1px solid green;
-}
-
-.two {
-  grid-area: two;
-  border: 1px solid green;
-}
-
-.three {
-  grid-area: three;
-  border: 1px solid green;
-}
-
-.four {
-  grid-area: four;
-  border: 1px solid green;
-}
-
-.five {
-  grid-area: five;
-  border: 1px solid green;
-}
-
-.six {
-  grid-area: six;
-}
-
-.seven {
-  grid-area: seven;
-}
-
-.eight {
-  grid-area: eight;
-}
-
-.nine {
-  grid-area: nine;
-}
-
-.enter {
-  grid-area: enter;
-  border: 1px solid blue;
-}
-
-.plus {
-  grid-area: plus;
-}
-
-.minus {
-  grid-area: minus;
-}
-
-.multi {
-  grid-area: multi;
-}
-
-.divi {
-  grid-area: divi;
+  text-align: right;
 }
 </style>
